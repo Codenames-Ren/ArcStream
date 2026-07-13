@@ -1,0 +1,5 @@
+export const CONFIG = {
+    DEFAULT_VIDEO_RESOLUTION: '720p',
+    SEARCH_DEBOUNCE: 500,
+    REQUEST_TIMEOUT: 10000,
+} as const;
