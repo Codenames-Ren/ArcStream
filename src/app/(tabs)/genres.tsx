@@ -1,22 +1,15 @@
-import { useState } from "react";
-
-import { FlatList, RefreshControl, Text } from "react-native";
-
-import { router } from "expo-router";
-
 import GenreItem from "@/components/anime/GenreItem";
-
 import CatLoader from "@/components/common/CatLoader";
+import DetailNavigation from "@/components/common/DetailNavigation";
 import EmptyState from "@/components/common/EmptyState";
 import ErrorState from "@/components/common/ErrorState";
-
 import { useGenres } from "@/hooks";
-
 import { genresStyles } from "@/styles/screens";
-
 import { colors } from "@/theme";
-
 import { Genre } from "@/types";
+import { router } from "expo-router";
+import { useState } from "react";
+import { FlatList, RefreshControl, Text, View } from "react-native";
 
 export default function GenresScreen() {
   const genresQuery = useGenres();
@@ -60,34 +53,43 @@ export default function GenresScreen() {
   const genres = genresQuery.data ?? [];
 
   return (
-    <FlatList
-      style={genresStyles.container}
-      contentContainerStyle={genresStyles.content}
-      data={genres}
-      keyExtractor={(item) => item.genreId}
-      numColumns={2}
-      columnWrapperStyle={genresStyles.row}
-      showsVerticalScrollIndicator={false}
-      refreshControl={
-        <RefreshControl
-          refreshing={refreshing}
-          onRefresh={onRefresh}
-          tintColor={colors.primary}
-        />
-      }
-      ListHeaderComponent={
-        <>
-          <Text style={genresStyles.title}>Genres</Text>
-
-          <Text style={genresStyles.subtitle}>Browse anime by genre</Text>
-        </>
-      }
-      ListEmptyComponent={
-        <EmptyState title="Genres" message="No genres available." />
-      }
-      renderItem={({ item }: { item: Genre }) => (
-        <GenreItem genre={item} onPress={(genre) => openGenre(genre.genreId)} />
-      )}
-    />
+    <View
+      style={{
+        flex: 1,
+      }}
+    >
+      <FlatList
+        style={genresStyles.container}
+        contentContainerStyle={genresStyles.content}
+        data={genres}
+        keyExtractor={(item) => item.genreId}
+        numColumns={2}
+        columnWrapperStyle={genresStyles.row}
+        showsVerticalScrollIndicator={false}
+        refreshControl={
+          <RefreshControl
+            refreshing={refreshing}
+            onRefresh={onRefresh}
+            tintColor={colors.primary}
+          />
+        }
+        ListHeaderComponent={
+          <>
+            <Text style={genresStyles.title}>Genres</Text>
+            <Text style={genresStyles.subtitle}>Browse anime by genre</Text>
+          </>
+        }
+        ListEmptyComponent={
+          <EmptyState title="Genres" message="No genres available." />
+        }
+        renderItem={({ item }: { item: Genre }) => (
+          <GenreItem
+            genre={item}
+            onPress={(genre) => openGenre(genre.genreId)}
+          />
+        )}
+      />
+      <DetailNavigation />
+    </View>
   );
 }
