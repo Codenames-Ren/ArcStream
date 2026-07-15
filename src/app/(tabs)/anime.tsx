@@ -1,21 +1,15 @@
-import { useMemo, useState } from "react";
-
-import { FlatList, RefreshControl, Text } from "react-native";
-
-import { router } from "expo-router";
-
 import AnimeListItem from "@/components/anime/AnimeListItem";
-
 import AlphabetFilter from "@/components/common/AlphabetFilter";
 import CatLoader from "@/components/common/CatLoader";
+import DetailNavigation from "@/components/common/DetailNavigation";
 import EmptyState from "@/components/common/EmptyState";
 import ErrorState from "@/components/common/ErrorState";
-
 import { useAnimeList } from "@/hooks";
-
 import { animeStyles } from "@/styles/screens";
-
 import { colors } from "@/theme";
+import { router } from "expo-router";
+import { useMemo, useState } from "react";
+import { FlatList, RefreshControl, Text, View } from "react-native";
 
 export default function AnimeScreen() {
   const animeQuery = useAnimeList();
@@ -75,36 +69,44 @@ export default function AnimeScreen() {
   }
 
   return (
-    <FlatList
-      style={animeStyles.container}
-      contentContainerStyle={animeStyles.content}
-      data={filteredAnime}
-      keyExtractor={(item, index) => item.id || String(index)}
-      numColumns={2}
-      columnWrapperStyle={animeStyles.row}
-      showsVerticalScrollIndicator={false}
-      refreshControl={
-        <RefreshControl
-          refreshing={refreshing}
-          onRefresh={onRefresh}
-          tintColor={colors.primary}
-        />
-      }
-      ListHeaderComponent={
-        <>
-          <Text style={animeStyles.title}>Anime List</Text>
-
-          <Text style={animeStyles.subtitle}>Browse all available anime</Text>
-
-          <AlphabetFilter value={filter} onChange={setFilter} />
-        </>
-      }
-      ListEmptyComponent={
-        <EmptyState title="Anime List" message="No anime available." />
-      }
-      renderItem={({ item }) => (
-        <AnimeListItem anime={item} onPress={(anime) => openAnime(anime.url)} />
-      )}
-    />
+    <View
+      style={{
+        flex: 1,
+      }}
+    >
+      <FlatList
+        style={animeStyles.container}
+        contentContainerStyle={animeStyles.content}
+        data={filteredAnime}
+        keyExtractor={(item, index) => item.id || String(index)}
+        numColumns={2}
+        columnWrapperStyle={animeStyles.row}
+        showsVerticalScrollIndicator={false}
+        refreshControl={
+          <RefreshControl
+            refreshing={refreshing}
+            onRefresh={onRefresh}
+            tintColor={colors.primary}
+          />
+        }
+        ListHeaderComponent={
+          <>
+            <Text style={animeStyles.title}>Anime List</Text>
+            <Text style={animeStyles.subtitle}>Browse all available anime</Text>
+            <AlphabetFilter value={filter} onChange={setFilter} />
+          </>
+        }
+        ListEmptyComponent={
+          <EmptyState title="Anime List" message="No anime available." />
+        }
+        renderItem={({ item }) => (
+          <AnimeListItem
+            anime={item}
+            onPress={(anime) => openAnime(anime.url)}
+          />
+        )}
+      />
+      <DetailNavigation />
+    </View>
   );
 }
