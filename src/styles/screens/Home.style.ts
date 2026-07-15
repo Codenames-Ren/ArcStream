@@ -7,7 +7,7 @@ export const homeStyles = StyleSheet.create({
     flex: 1,
     backgroundColor: colors.background,
   },
-  content: { paddingBottom: spacing.xxxl },
+  content: { paddingBottom: spacing.xxxl + 80 },
 
   header: {
     flexDirection: "row",
