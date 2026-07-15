@@ -72,7 +72,7 @@ export default function AnimeCard({
         {showGenres && anime.genre?.length ? (
           <View style={animeCardStyles.genres}>
             {anime.genre.slice(0, maxGenres).map((genre) => (
-              <GenreBadge key={genre} genre={genre} />
+              <GenreBadge key={genre.genreId} genre={genre.title} />
             ))}
           </View>
         ) : null}
