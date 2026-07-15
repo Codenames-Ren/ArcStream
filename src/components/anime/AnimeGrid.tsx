@@ -10,6 +10,7 @@ interface AnimeGridProps {
   showEpisode?: boolean;
   showUpdate?: boolean;
   showGenres?: boolean;
+  scrollEnabled?: boolean;
 }
 
 export default function AnimeGrid({
@@ -19,12 +20,13 @@ export default function AnimeGrid({
   showEpisode = true,
   showUpdate = false,
   showGenres = false,
+  scrollEnabled = false,
 }: AnimeGridProps) {
   return (
     <FlatList
       data={data}
       numColumns={2}
-      scrollEnabled={false}
+      scrollEnabled={scrollEnabled}
       keyExtractor={(item) => item.id}
       contentContainerStyle={animeGridStyles.content}
       columnWrapperStyle={animeGridStyles.row}
