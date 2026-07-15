@@ -46,7 +46,19 @@ export const animeService = {
   async genre(slug: string, page = 1) {
     const { data } = await animeApi.genre(slug, page);
 
-    return data;
+    return {
+      genre: data.genre ?? slug,
+
+      page: data.page ?? page,
+
+      total: data.total ?? 0,
+
+      next: data.next ?? null,
+
+      prev: data.prev ?? null,
+
+      list: Array.isArray(data.list) ? data.list.map(normalizeAnime) : [],
+    };
   },
 
   async stream(episodeId: string) {
