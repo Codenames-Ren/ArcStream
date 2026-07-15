@@ -1,37 +1,29 @@
 import AnimeRow from "@/components/anime/AnimeRow";
 import HeroCarousel from "@/components/anime/HeroCarousel";
-
 import CatLoader from "@/components/common/CatLoader";
+import DetailNavigation from "@/components/common/DetailNavigation";
 import EmptyState from "@/components/common/EmptyState";
 import ErrorState from "@/components/common/ErrorState";
 import SearchBar from "@/components/common/SearchBar";
-
 import { useHome } from "@/hooks";
-
 import { homeStyles } from "@/styles/screens";
 import { colors } from "@/theme";
-
-import { Feather } from "@expo/vector-icons";
 import { Image } from "expo-image";
 import { router } from "expo-router";
-
 import { useState } from "react";
-import {
-  RefreshControl,
-  ScrollView,
-  Text,
-  TouchableOpacity,
-  View,
-} from "react-native";
+import { RefreshControl, ScrollView, Text, View } from "react-native";
 
 export default function HomeScreen() {
   const homeQuery = useHome();
+
   const [refreshing, setRefreshing] = useState(false);
 
   function openAnime(id: string) {
     router.push({
       pathname: "/anime/[id]",
-      params: { id },
+      params: {
+        id,
+      },
     });
   }
 
@@ -70,93 +62,92 @@ export default function HomeScreen() {
   ).slice(0, 7);
 
   return (
-    <ScrollView
-      style={homeStyles.container}
-      contentContainerStyle={homeStyles.content}
-      showsVerticalScrollIndicator={false}
-      refreshControl={
-        <RefreshControl
-          refreshing={refreshing}
-          onRefresh={onRefresh}
-          tintColor={colors.primary}
-        />
-      }
+    <View
+      style={{
+        flex: 1,
+      }}
     >
-      <View style={homeStyles.header}>
-        <View style={homeStyles.logoContainer}>
-          <Image
-            source={require("@/assets/images/icon.png")}
-            style={homeStyles.logoIcon}
-            contentFit="contain"
+      <ScrollView
+        style={homeStyles.container}
+        contentContainerStyle={homeStyles.content}
+        showsVerticalScrollIndicator={false}
+        refreshControl={
+          <RefreshControl
+            refreshing={refreshing}
+            onRefresh={onRefresh}
+            tintColor={colors.primary}
           />
+        }
+      >
+        <View style={homeStyles.header}>
+          <View style={homeStyles.logoContainer}>
+            <Image
+              source={require("@/assets/images/icon.png")}
+              style={homeStyles.logoIcon}
+              contentFit="contain"
+            />
 
-          <Text style={homeStyles.logo}>Arc Stream</Text>
+            <Text style={homeStyles.logo}>Arc Stream</Text>
+          </View>
         </View>
 
-        <TouchableOpacity
-          style={homeStyles.headerButton}
-          onPress={() => router.push("/about")}
-        >
-          <Feather name="info" size={22} color={colors.text} />
-        </TouchableOpacity>
-      </View>
-
-      <View style={homeStyles.searchContainer}>
-        <SearchBar
-          value=""
-          editable={false}
-          placeholder="Search anime..."
-          onPress={() => router.push("/search")}
-        />
-      </View>
-
-      {!!heroData.length && (
-        <View style={homeStyles.heroContainer}>
-          <HeroCarousel
-            data={heroData}
-            onPrimaryPress={(anime) => openAnime(anime.url)}
-            onSecondaryPress={(anime) => openAnime(anime.url)}
+        <View style={homeStyles.searchContainer}>
+          <SearchBar
+            value=""
+            editable={false}
+            placeholder="Search anime..."
+            onPress={() => router.push("/search")}
           />
         </View>
-      )}
 
-      <View style={homeStyles.section}>
-        {home.ongoing.length ? (
-          <AnimeRow
-            title="Ongoing Anime"
-            subtitle="Currently Airing"
-            data={home.ongoing}
-            showEpisode
-            showUpdate
-            onPress={(anime) => openAnime(anime.url)}
-          />
-        ) : (
-          <EmptyState title="Ongoing Anime" message="No anime available." />
+        {!!heroData.length && (
+          <View style={homeStyles.heroContainer}>
+            <HeroCarousel
+              data={heroData}
+              onPrimaryPress={(anime) => openAnime(anime.url)}
+              onSecondaryPress={(anime) => openAnime(anime.url)}
+            />
+          </View>
         )}
-      </View>
 
-      {!!home.completed.length && (
         <View style={homeStyles.section}>
-          <AnimeRow
-            title="Completed Anime"
-            subtitle="Finished Series"
-            data={home.completed}
-            showTotalEpisode
-            onPress={(anime) => openAnime(anime.url)}
-          />
+          {home.ongoing.length ? (
+            <AnimeRow
+              title="Ongoing Anime"
+              subtitle="Currently Airing"
+              data={home.ongoing}
+              showEpisode
+              showUpdate
+              onPress={(anime) => openAnime(anime.url)}
+            />
+          ) : (
+            <EmptyState title="Ongoing Anime" message="No anime available." />
+          )}
         </View>
-      )}
 
-      {!!home.random.length && (
-        <View style={homeStyles.section}>
-          <AnimeRow
-            title="Random Anime"
-            subtitle="You might like these"
-            data={home.random}
-            onPress={(anime) => openAnime(anime.url)}
-          />
-        </View>
-      )}
-    </ScrollView>
+        {!!home.completed.length && (
+          <View style={homeStyles.section}>
+            <AnimeRow
+              title="Completed Anime"
+              subtitle="Finished Series"
+              data={home.completed}
+              showTotalEpisode
+              onPress={(anime) => openAnime(anime.url)}
+            />
+          </View>
+        )}
+        {!!home.random.length && (
+          <View style={homeStyles.section}>
+            <AnimeRow
+              title="Random Anime"
+              subtitle="You might like these"
+              data={home.random}
+              onPress={(anime) => openAnime(anime.url)}
+            />
+          </View>
+        )}
+      </ScrollView>
+      <DetailNavigation />
+    </View>
   );
 }
