@@ -1,8 +1,8 @@
 {
   "expo": {
-    "name": "ArcStream",
+    "name": "Arc Stream",
     "slug": "ArcStream",
-    "version": "1.0.0",
+    "version": "1.1.0",
     "orientation": "portrait",
     "icon": "./assets/images/icon.png",
     "scheme": "arcstream",
@@ -12,9 +12,10 @@
     },
     "android": {
       "package": "com.byproject.arcstream",
+      "versionCode": 2,
       "adaptiveIcon": {
         "backgroundColor": "#09090B",
-        "foregroundImage": "./assets/images/icon.png"
+        "foregroundImage": "./assets/images/adaptive-icon.png"
       },
       "predictiveBackGestureEnabled": false
     },
@@ -27,13 +28,15 @@
       [
         "expo-splash-screen",
         {
-          "backgroundColor": "#208AEF",
+          "backgroundColor": "#09090B",
           "image": "./assets/images/splash-icon.png",
-          "imageWidth": 76
+          "imageWidth": 120
         }
       ],
       "expo-image",
-      "expo-video"
+      "expo-video",
+      "expo-status-bar",
+      "expo-web-browser"
     ],
     "experiments": {
       "typedRoutes": true,
