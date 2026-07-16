@@ -9,6 +9,14 @@ export const animeApi = {
     return http.get("/anime");
   },
 
+  completed(page = 1) {
+    return http.get("/completed", {
+      params: {
+        page,
+      },
+    });
+  },
+
   detail(slug: string) {
     return http.get(`/anime/${slug}`);
   },
