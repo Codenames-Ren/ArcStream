@@ -6,35 +6,20 @@ export interface Anime {
 
   latestEpisode?: string | number | null;
   latestUpdate?: string;
-
   genre?: AnimeGenre[];
-
   synopsis?: string;
-
   studio?: string;
-
   score?: string;
-
   status?: string;
-
   releaseDate?: string;
-
   totalEpisode?: number | null;
-
   type?: string;
-
   duration?: string;
-
   japaneseTitle?: string;
-
   producers?: string;
-
   season?: string;
-
   episodes?: AnimeEpisode[];
-
   connections?: AnimeConnection[];
-
   recommendations?: AnimeRecommendation[];
 }
 
