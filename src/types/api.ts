@@ -12,6 +12,13 @@ export interface Pagination {
   totalData?: number;
 }
 
+export interface CompletedResponse {
+  currentPage: number;
+  totalPages: number;
+  hasNextPage: boolean;
+  animeList: Anime[];
+}
+
 export interface HomeResponse {
   hero?: Anime | null;
   ongoing: Anime[];
