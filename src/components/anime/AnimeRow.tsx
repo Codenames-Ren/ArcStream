@@ -1,11 +1,8 @@
-import { DimensionValue, FlatList, View } from "react-native";
-
-import SectionTitle from "@/components/common/SectionTitle";
-
+import SectionHeader from "@/components/anime/SectionHeader";
 import { animeRowStyles } from "@/styles/anime";
-import { Anime } from "@/types";
-
 import { spacing } from "@/theme";
+import { Anime } from "@/types";
+import { DimensionValue, FlatList, View } from "react-native";
 import AnimeCard from "./AnimeCard";
 
 interface AnimeRowProps {
@@ -23,6 +20,7 @@ interface AnimeRowProps {
   contentPadding?: number;
   showsHorizontalScrollIndicator?: boolean;
   onPress?: (anime: Anime) => void;
+  onExpand?: () => void;
 }
 
 export default function AnimeRow({
@@ -40,10 +38,16 @@ export default function AnimeRow({
   contentPadding = spacing.lg,
   showsHorizontalScrollIndicator = false,
   onPress,
+  onExpand,
 }: AnimeRowProps) {
   return (
     <View style={animeRowStyles.container}>
-      <SectionTitle title={title} subtitle={subtitle} />
+      <SectionHeader
+        title={title}
+        subtitle={subtitle}
+        actionText={onExpand ? "See All" : undefined}
+        onActionPress={onExpand}
+      />
 
       <FlatList
         horizontal={horizontal}
