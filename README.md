@@ -1,57 +1,150 @@
-# Welcome to your Expo app 👋
+# 🎬 Arc Stream
 
-This is an [Expo](https://expo.dev) project created with [`create-expo-app`](https://www.npmjs.com/package/create-expo-app).
+Arc Stream is a modern Android anime streaming application built with **React Native (Expo)**. It offers a clean, responsive, and lightweight interface for browsing anime, viewing details, and watching episodes through publicly available streaming sources.
 
-## Get started
+> ⚠️ **Disclaimer**
+> ArcStream is **not** a content provider or hosting platform. It functions solely as a client application that displays metadata and streams content from publicly available sources.
 
-1. Install dependencies
+---
 
-   ```bash
-   npm install
-   ```
+# ✨ Features
 
-2. Start the app
+- 🎬 Browse Latest Ongoing Anime
+- ✅ Browse Completed Anime
+- 🔍 Fast Anime Search
+- 🎭 Browse by Genre
+- 📄 Detailed Anime Information
+- 🌐 Multiple Streaming Servers
+- ❤️ Anime Recommendations
+- ⏭ Previous / Next Episode Navigation
+- 📱 Responsive Mobile UI
+- 🌙 Dark Theme
+- 🛡 Built-in WebView Ad Blocking
 
-   ```bash
-   npx expo start
-   ```
+---
 
-In the output, you'll find options to open the app in a
+<!-- # 📸 Screenshots
 
-- [development build](https://docs.expo.dev/develop/development-builds/introduction/)
-- [Android emulator](https://docs.expo.dev/workflow/android-studio-emulator/)
-- [iOS simulator](https://docs.expo.dev/workflow/ios-simulator/)
-- [Expo Go](https://expo.dev/go), a limited sandbox for trying out app development with Expo
+> Coming Soon
 
-You can start developing by editing the files inside the **app** directory. This project uses [file-based routing](https://docs.expo.dev/router/introduction).
+--- -->
 
-## Get a fresh project
+# 🛠 Tech Stack
 
-When you're ready, run:
+- React Native
+- Expo Dev
 
-```bash
-npm run reset-project
+---
+
+# 📂 Project Structure
+
+```text
+ArcStream/
+│
+├── assets/
+├── src/
+│   ├── api/
+│   ├── app/
+│   ├── components/
+│   ├── constants/
+│   ├── hooks/
+│   ├── lib/
+│   ├── mapper/
+│   ├── services/
+│   ├── styles/
+│   ├── theme/
+│   ├── types/
+│   └── utils/
 ```
 
-This command will move the starter code to the **app-example** directory and create a blank **app** directory where you can start developing.
+---
 
-### Other setup steps
+# 🚀 Getting Started
 
-- To set up ESLint for linting, run `npx expo lint`, or follow our guide on ["Using ESLint and Prettier"](https://docs.expo.dev/guides/using-eslint/)
-- If you'd like to set up unit testing, follow our guide on ["Unit Testing with Jest"](https://docs.expo.dev/develop/unit-testing/)
-- Learn more about the TypeScript setup in this template in our guide on ["Using TypeScript"](https://docs.expo.dev/guides/typescript/)
+## Clone Repository
 
-## Learn more
+```bash
+git clone https://github.com/Codenames-Ren/ArcStream.git
 
-To learn more about developing your project with Expo, look at the following resources:
+cd ArcStream
+```
 
-- [Expo documentation](https://docs.expo.dev/): Learn fundamentals, or go into advanced topics with our [guides](https://docs.expo.dev/guides).
-- [Learn Expo tutorial](https://docs.expo.dev/tutorial/introduction/): Follow a step-by-step tutorial where you'll create a project that runs on Android, iOS, and the web.
+---
 
-## Join the community
+## Install Dependencies
 
-Join our community of developers creating universal apps.
+```bash
+npm install
+```
 
-- [Expo on GitHub](https://github.com/expo/expo): View our open source platform and contribute.
-- [Discord community](https://chat.expo.dev): Chat with Expo users and ask questions.
-"# ArcStream" 
+---
+
+## Environment Variables
+
+Create a `.env` file in the project root.
+
+```env
+EXPO_PUBLIC_API_URL=https://your-api-url
+```
+
+Example:
+
+```env
+EXPO_PUBLIC_API_URL=https://example.com
+```
+
+---
+
+## Start Development Server
+
+```bash
+npx expo start
+```
+
+---
+
+## Build APK
+
+```bash
+eas build -p android --profile preview
+```
+
+---
+
+# ⚠️ Disclaimer
+
+ArcStream **does not host, upload, distribute, or own any anime content**.
+
+This application acts solely as a client that retrieves metadata and streaming information from publicly available sources. All copyrights and trademarks belong to their respective owners.
+
+This project is intended for **educational and personal learning purposes only**.
+
+---
+
+# 📄 License
+
+Licensed under the **MIT License**.
+
+See the [LICENSE](LICENSE) file for more information.
+
+---
+
+# 👤 Author
+
+**Bayu Sukma**
+
+GitHub: https://github.com/Codenames-Ren
+
+---
+
+# 🤝 Contributing
+
+Contributions, bug reports, feature requests, and pull requests are welcome.
+
+If you discover a bug or have an idea for improving Arc Stream, feel free to open an issue or submit a pull request.
+
+---
+
+# ⭐ Support
+
+If you find this project useful, consider giving it a ⭐ on GitHub.
