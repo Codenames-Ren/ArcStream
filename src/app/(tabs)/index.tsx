@@ -6,17 +6,51 @@ import EmptyState from "@/components/common/EmptyState";
 import ErrorState from "@/components/common/ErrorState";
 import SearchBar from "@/components/common/SearchBar";
 import { useHome } from "@/hooks";
+import { animeService } from "@/services/anime.service";
 import { homeStyles } from "@/styles/screens";
 import { colors } from "@/theme";
 import { Image } from "expo-image";
-import { router } from "expo-router";
-import { useState } from "react";
-import { RefreshControl, ScrollView, Text, View } from "react-native";
+import { router, useFocusEffect } from "expo-router";
+import { useCallback, useRef, useState } from "react";
+import {
+  BackHandler,
+  RefreshControl,
+  ScrollView,
+  Text,
+  ToastAndroid,
+  View,
+} from "react-native";
 
 export default function HomeScreen() {
   const homeQuery = useHome();
-
   const [refreshing, setRefreshing] = useState(false);
+  const lastBackPress = useRef(0);
+  useFocusEffect(
+    useCallback(() => {
+      function onBackPress() {
+        const now = Date.now();
+
+        if (now - lastBackPress.current < 2000) {
+          BackHandler.exitApp();
+          return true;
+        }
+
+        lastBackPress.current = now;
+        ToastAndroid.show(
+          "Tekan sekali lagi untuk keluar dari aplikasi",
+          ToastAndroid.SHORT,
+        );
+        return true;
+      }
+
+      const subscription = BackHandler.addEventListener(
+        "hardwareBackPress",
+        onBackPress,
+      );
+
+      return () => subscription.remove();
+    }, []),
+  );
 
   function openAnime(id: string) {
     router.push({
@@ -25,6 +59,37 @@ export default function HomeScreen() {
         id,
       },
     });
+  }
+
+  function openList(type: "ongoing" | "completed") {
+    router.push({
+      pathname: "/list/[type]",
+      params: {
+        type,
+      },
+    });
+  }
+
+  async function watchNow(slug: string) {
+    try {
+      const detail = await animeService.detail(slug);
+
+      const latestEpisode = detail.episodes?.[0];
+
+      if (!latestEpisode) {
+        openAnime(slug);
+        return;
+      }
+
+      router.push({
+        pathname: "/player/[episodeId]",
+        params: {
+          episodeId: latestEpisode.episodeId,
+        },
+      });
+    } catch {
+      openAnime(slug);
+    }
   }
 
   async function onRefresh() {
@@ -104,7 +169,7 @@ export default function HomeScreen() {
           <View style={homeStyles.heroContainer}>
             <HeroCarousel
               data={heroData}
-              onPrimaryPress={(anime) => openAnime(anime.url)}
+              onPrimaryPress={(anime) => watchNow(anime.url)}
               onSecondaryPress={(anime) => openAnime(anime.url)}
             />
           </View>
@@ -119,6 +184,7 @@ export default function HomeScreen() {
               showEpisode
               showUpdate
               onPress={(anime) => openAnime(anime.url)}
+              onExpand={() => openList("ongoing")}
             />
           ) : (
             <EmptyState title="Ongoing Anime" message="No anime available." />
@@ -133,9 +199,11 @@ export default function HomeScreen() {
               data={home.completed}
               showTotalEpisode
               onPress={(anime) => openAnime(anime.url)}
+              onExpand={() => openList("completed")}
             />
           </View>
         )}
+
         {!!home.random.length && (
           <View style={homeStyles.section}>
             <AnimeRow
