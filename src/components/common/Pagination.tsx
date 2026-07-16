@@ -8,6 +8,12 @@ interface PaginationProps {
 }
 
 export default function Pagination({ page, total, onChange }: PaginationProps) {
+  function goFirst() {
+    if (page > 1) {
+      onChange(1);
+    }
+  }
+
   function goPrevious() {
     if (page > 1) {
       onChange(page - 1);
@@ -17,6 +23,12 @@ export default function Pagination({ page, total, onChange }: PaginationProps) {
   function goNext() {
     if (page < total) {
       onChange(page + 1);
+    }
+  }
+
+  function goLast() {
+    if (page < total) {
+      onChange(total);
     }
   }
 
@@ -50,6 +62,18 @@ export default function Pagination({ page, total, onChange }: PaginationProps) {
 
   return (
     <View style={paginationStyles.container}>
+      <Pressable
+        style={[
+          paginationStyles.button,
+
+          page === 1 && paginationStyles.buttonDisabled,
+        ]}
+        disabled={page === 1}
+        onPress={goFirst}
+      >
+        <Text style={paginationStyles.text}>«</Text>
+      </Pressable>
+
       <Pressable
         style={[
           paginationStyles.button,
@@ -100,6 +124,18 @@ export default function Pagination({ page, total, onChange }: PaginationProps) {
         onPress={goNext}
       >
         <Text style={paginationStyles.text}>›</Text>
+      </Pressable>
+
+      <Pressable
+        style={[
+          paginationStyles.button,
+
+          page === total && paginationStyles.buttonDisabled,
+        ]}
+        disabled={page === total}
+        onPress={goLast}
+      >
+        <Text style={paginationStyles.text}>»</Text>
       </Pressable>
     </View>
   );
