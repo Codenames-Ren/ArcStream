@@ -25,7 +25,7 @@ const menus = [
 
 export default function DetailNavigation() {
   function navigate(route: string) {
-    router.replace(route as never);
+    router.navigate(route as never);
   }
 
   return (
