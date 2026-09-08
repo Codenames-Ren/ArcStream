@@ -17,6 +17,14 @@ export const animeApi = {
     });
   },
 
+  ongoing(page = 1) {
+    return http.get("/ongoing", {
+      params: {
+        page,
+      },
+    });
+  },
+
   detail(slug: string) {
     return http.get(`/anime/${slug}`);
   },
