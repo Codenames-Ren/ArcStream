@@ -6,15 +6,15 @@ import ErrorState from "@/components/common/ErrorState";
 import PageJump from "@/components/common/PageJump";
 import Pagination from "@/components/common/Pagination";
 import { useCompletedAnime } from "@/hooks/useCompletedAnime";
-import { animeService } from "@/services/anime.service";
+import { useOngoingAnime } from "@/hooks/useOngoingAnime";
 import { listStyles } from "@/styles/screens";
 import { Anime } from "@/types";
-import { useQuery } from "@tanstack/react-query";
 import { router, useLocalSearchParams } from "expo-router";
 import { useState } from "react";
 import { FlatList, Text, View } from "react-native";
 
 const ITEMS_PER_PAGE = 16;
+const BACKEND_ITEMS_PER_PAGE = 25;
 
 export default function AnimeListScreen() {
   const params = useLocalSearchParams<{
@@ -23,21 +23,13 @@ export default function AnimeListScreen() {
 
   const type = params.type ?? "ongoing";
   const isCompleted = type === "completed";
+
   const [page, setPage] = useState(1);
-  const backendPage = isCompleted ? Math.ceil(page / 2) : 1;
+
+  const backendPage = Math.ceil(page / 2);
+
   const completedQuery = useCompletedAnime(backendPage);
-
-  const ongoingQuery = useQuery({
-    queryKey: ["ongoing-anime"],
-
-    queryFn: async () => {
-      const home = await animeService.home();
-
-      return home.ongoing;
-    },
-
-    enabled: !isCompleted,
-  });
+  const ongoingQuery = useOngoingAnime(backendPage);
 
   const listQuery = isCompleted ? completedQuery : ongoingQuery;
 
@@ -67,25 +59,27 @@ export default function AnimeListScreen() {
 
   const title = isCompleted ? "Completed Anime" : "Ongoing Anime";
 
-  const animeList: Anime[] = isCompleted
-    ? (completedQuery.data?.list ?? [])
-    : (ongoingQuery.data ?? []);
+  const animeList: Anime[] = listQuery.data?.list ?? [];
 
   if (!animeList.length) {
     return <EmptyState title={title} message="No anime available." />;
   }
 
-  const backendTotalPages = completedQuery.data?.totalPage ?? 1;
-  const totalPage = isCompleted
-    ? backendTotalPages * 2
-    : Math.max(1, Math.ceil(animeList.length / ITEMS_PER_PAGE));
+  const backendTotalPages = listQuery.data?.totalPage ?? 1;
+
+  const totalPage = Math.max(
+    1,
+    backendTotalPages * Math.ceil(BACKEND_ITEMS_PER_PAGE / ITEMS_PER_PAGE)
+  );
 
   const localPage = page % 2 === 0 ? 2 : 1;
-  const startIndex = isCompleted
-    ? (localPage - 1) * ITEMS_PER_PAGE
-    : (page - 1) * ITEMS_PER_PAGE;
 
-  const currentData = animeList.slice(startIndex, startIndex + ITEMS_PER_PAGE);
+  const startIndex = (localPage - 1) * ITEMS_PER_PAGE;
+
+  const currentData = animeList.slice(
+    startIndex,
+    startIndex + ITEMS_PER_PAGE
+  );
 
   function changePage(nextPage: number) {
     setPage(nextPage);
@@ -130,7 +124,11 @@ export default function AnimeListScreen() {
         )}
         ListFooterComponent={
           totalPage > 1 ? (
-            <Pagination page={page} total={totalPage} onChange={changePage} />
+            <Pagination
+              page={page}
+              total={totalPage}
+              onChange={changePage}
+            />
           ) : null
         }
       />
