@@ -5,4 +5,4 @@ export * from "./useGenres";
 export * from "./useHome";
 export * from "./useSearchAnime";
 export * from "./useStream";
-
+export * from "./useOngoingAnime";
