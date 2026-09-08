@@ -39,6 +39,21 @@ export const animeService = {
     };
   },
 
+  async ongoing(page = 1) {
+    const { data } = await animeApi.ongoing(page);
+
+    const response = data.data ?? data;
+
+    return {
+      page: response.currentPage ?? page,
+      totalPage: response.totalPages ?? 0,
+      hashNextpage: response.hasNextpage ?? false,
+      list: Array.isArray(response.animeList)
+        ? response.animeList.map(normalizeAnime)
+        : [],
+    };
+  },
+
   async detail(slug: string): Promise<Anime> {
     const { data } = await animeApi.detail(slug);
 
