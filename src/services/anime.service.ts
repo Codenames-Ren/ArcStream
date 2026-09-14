@@ -23,16 +23,12 @@ export const animeService = {
 
   async completed(page = 1) {
     const { data } = await animeApi.completed(page);
-
     const response = data.data ?? data;
 
     return {
       page: response.currentPage ?? page,
-
       totalPage: response.totalPages ?? 0,
-
       hasNextPage: response.hasNextPage ?? false,
-
       list: Array.isArray(response.animeList)
         ? response.animeList.map(normalizeAnime)
         : [],
@@ -41,7 +37,6 @@ export const animeService = {
 
   async ongoing(page = 1) {
     const { data } = await animeApi.ongoing(page);
-
     const response = data.data ?? data;
 
     return {
@@ -60,10 +55,15 @@ export const animeService = {
     return normalizeAnime(data);
   },
 
-  async search(keyword: string): Promise<Anime[]> {
+  async search(keyword: string) {
     const { data } = await animeApi.search(keyword);
 
-    return data.result.map(normalizeAnime);
+    return {
+      list: Array.isArray(data.result)
+        ? data.result.map(normalizeAnime)
+        : [],
+      message: data.message ?? "",
+    };
   },
 
   async genres() {
@@ -81,7 +81,6 @@ export const animeService = {
       total: data.total ?? 0,
       next: data.next ?? null,
       prev: data.prev ?? null,
-
       list: Array.isArray(data.list) ? data.list.map(normalizeAnime) : [],
     };
   },

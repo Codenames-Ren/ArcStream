@@ -16,11 +16,20 @@ export default function SearchScreen() {
   const [keyword, setKeyword] = useState("");
   const [query, setQuery] = useState("");
   const [page, setPage] = useState(1);
+
   const searchQuery = useSearchAnime(query);
+
   const pageSize = 16;
-  const data = searchQuery.data ?? [];
+  const searchData = searchQuery.data;
+  const data = searchData?.list ?? [];
+  const message = searchData?.message ?? "";
+
   const totalPage = Math.ceil(data.length / pageSize);
-  const paginatedData = data.slice((page - 1) * pageSize, page * pageSize);
+
+  const paginatedData = data.slice(
+    (page - 1) * pageSize,
+    page * pageSize,
+  );
 
   function submitSearch() {
     setPage(1);
@@ -91,7 +100,11 @@ export default function SearchScreen() {
         ListFooterComponent={
           totalPage > 1 ? (
             <View style={searchStyles.pagination}>
-              <Pagination page={page} total={totalPage} onChange={setPage} />
+              <Pagination
+                page={page}
+                total={totalPage}
+                onChange={setPage}
+              />
             </View>
           ) : null
         }
@@ -102,7 +115,10 @@ export default function SearchScreen() {
               message="Type something to search."
             />
           ) : (
-            <EmptyState title="No Result" message="Anime not found." />
+            <EmptyState
+              title="No Result"
+              message={message || "Anime not found."}
+            />
           )
         }
       />

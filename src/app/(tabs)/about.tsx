@@ -16,7 +16,7 @@ export default function AboutScreen() {
         </View>
 
         <Text style={aboutStyles.title}>Arc Stream</Text>
-        <Text style={aboutStyles.version}>Version 1.1.0</Text>
+        <Text style={aboutStyles.version}>Version 1.1.2</Text>
 
         <Text style={aboutStyles.description}>
           Anime streaming application built with React Native.

@@ -34,7 +34,7 @@ export default function AnimeListScreen() {
   const listQuery = isCompleted ? completedQuery : ongoingQuery;
 
   function openAnime(id: string) {
-    router.replace({
+    router.push({
       pathname: "/anime/[id]",
       params: {
         id,
